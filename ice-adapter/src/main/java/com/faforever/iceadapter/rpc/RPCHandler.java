@@ -59,19 +59,19 @@ public class RPCHandler {
     public void iceMsg(long remotePlayerId, Object msg) {
         boolean err = true;
 
-        GameSession gameSession = IceAdapter.gameSession;
-        if (gameSession != null) {//This is highly unlikely, game session got created if JoinGame/HostGame came first
-            Peer peer = gameSession.getPeers().get((int) remotePlayerId);
-            if (peer != null) {//This is highly unlikely, peer is present if connectToPeer was called first
-                try {
-                    peer.getIce().onIceMessageReceived(objectMapper.readValue((String) msg, CandidatesMessage.class));
-                    err = false;
-                } catch (IOException e) {
-                    log.error("Failed to parse iceMsg {}", msg, e);
-                    return;
-                }
-            }
-        }
+        // GameSession gameSession = IceAdapter.gameSession;
+        // if (gameSession != null) {//This is highly unlikely, game session got created if JoinGame/HostGame came first
+        //     Peer peer = gameSession.getPeers().get((int) remotePlayerId);
+        //     if (peer != null) {//This is highly unlikely, peer is present if connectToPeer was called first
+        //         try {
+        //             peer.getIce().onIceMessageReceived(objectMapper.readValue((String) msg, CandidatesMessage.class));
+        //             err = false;
+        //         } catch (IOException e) {
+        //             log.error("Failed to parse iceMsg {}", msg, e);
+        //             return;
+        //         }
+        //     }
+        // }
 
         if (err) {
             log.error("ICE MESSAGE IGNORED for id: {}", remotePlayerId);
@@ -99,28 +99,28 @@ public class RPCHandler {
 
         List<IceStatus.IceRelay> relays = new ArrayList<>();
         GameSession gameSession = IceAdapter.gameSession;
-        if (gameSession != null) {
-            synchronized (gameSession.getPeers()) {
-                gameSession.getPeers().values().stream()
-                        .map(peer -> {
-                            IceStatus.IceRelay.IceRelayICEState iceRelayICEState = new IceStatus.IceRelay.IceRelayICEState(
-                                    peer.isLocalOffer(),
-                                    peer.getIce().getIceState().getMessage(),
-                                    "",
-                                    "",
-                                    peer.getIce().isConnected(),
-                                    Optional.ofNullable(peer.getIce().getComponent()).map(Component::getSelectedPair).map(CandidatePair::getLocalCandidate).map(Candidate::getHostAddress).map(TransportAddress::toString).orElse(""),
-                                    Optional.ofNullable(peer.getIce().getComponent()).map(Component::getSelectedPair).map(CandidatePair::getRemoteCandidate).map(Candidate::getHostAddress).map(TransportAddress::toString).orElse(""),
-                                    Optional.ofNullable(peer.getIce().getComponent()).map(Component::getSelectedPair).map(CandidatePair::getLocalCandidate).map(Candidate::getType).map(CandidateType::toString).orElse(""),
-                                    Optional.ofNullable(peer.getIce().getComponent()).map(Component::getSelectedPair).map(CandidatePair::getRemoteCandidate).map(Candidate::getType).map(CandidateType::toString).orElse(""),
-                                    -1.0
-                            );
+        // if (gameSession != null) {
+        //     synchronized (gameSession.getPeers()) {
+        //         gameSession.getPeers().values().stream()
+        //                 .map(peer -> {
+        //                     IceStatus.IceRelay.IceRelayICEState iceRelayICEState = new IceStatus.IceRelay.IceRelayICEState(
+        //                             peer.isLocalOffer(),
+        //                             peer.getIce().getIceState().getMessage(),
+        //                             "",
+        //                             "",
+        //                             peer.getIce().isConnected(),
+        //                             Optional.ofNullable(peer.getIce().getComponent()).map(Component::getSelectedPair).map(CandidatePair::getLocalCandidate).map(Candidate::getHostAddress).map(TransportAddress::toString).orElse(""),
+        //                             Optional.ofNullable(peer.getIce().getComponent()).map(Component::getSelectedPair).map(CandidatePair::getRemoteCandidate).map(Candidate::getHostAddress).map(TransportAddress::toString).orElse(""),
+        //                             Optional.ofNullable(peer.getIce().getComponent()).map(Component::getSelectedPair).map(CandidatePair::getLocalCandidate).map(Candidate::getType).map(CandidateType::toString).orElse(""),
+        //                             Optional.ofNullable(peer.getIce().getComponent()).map(Component::getSelectedPair).map(CandidatePair::getRemoteCandidate).map(Candidate::getType).map(CandidateType::toString).orElse(""),
+        //                             -1.0
+        //                     );
 
-                            return new IceStatus.IceRelay(peer.getRemoteId(), peer.getRemoteLogin(), peer.getFaSocket().getLocalPort(), iceRelayICEState);
-                        })
-                        .forEach(relays::add);
-            }
-        }
+        //                     return new IceStatus.IceRelay(peer.getRemoteId(), peer.getRemoteLogin(), peer.getFaSocket().getLocalPort(), iceRelayICEState);
+        //                 })
+        //                 .forEach(relays::add);
+        //     }
+        // }
 
         IceStatus status = new IceStatus(
                 IceAdapter.VERSION,

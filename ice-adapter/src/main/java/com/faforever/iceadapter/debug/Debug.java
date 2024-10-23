@@ -27,7 +27,7 @@ public class Debug {
 	}
 
 	public static void init() {
-		new TelemetryDebugger(IceAdapter.TELEMETRY_SERVER, IceAdapter.gameId, IceAdapter.id);
+		//new TelemetryDebugger(IceAdapter.TELEMETRY_SERVER, IceAdapter.gameId, IceAdapter.id);
 
 		// Debugger window is started and set to debugFuture when either window is requested as the info window can be used to open the debug window
 		// This is not used anymore as the debug window is started and hidden in case it is requested via the tray icon

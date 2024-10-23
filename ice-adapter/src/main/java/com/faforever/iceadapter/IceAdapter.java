@@ -135,6 +135,12 @@ public class IceAdapter implements Callable<Integer> {
         }
 
         gameSession = new GameSession();
+        try {
+            gameSession.init();
+        } catch (Exception e) {
+            log.error("createGameSession failed {}", e);
+            close();
+        }
     }
 
     /**

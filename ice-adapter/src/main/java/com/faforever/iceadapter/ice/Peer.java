@@ -5,7 +5,11 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
-import java.net.*;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 
 /**
  * Represents a peer in the current game session which we are connected to
@@ -20,7 +24,6 @@ public class Peer {
     private final String remoteLogin;
     private final boolean localOffer;//Do we offer or are we waiting for a remote offer
 
-    private PeerIceModule ice = new PeerIceModule(this);
     private DatagramSocket faSocket;//Socket on which we are listening for FA / sending data to FA
 
     public Peer(GameSession gameSession, int remoteId, String remoteLogin, boolean localOffer) {
@@ -32,10 +35,6 @@ public class Peer {
         log.debug("Peer created: {}, {}, localOffer: {}", remoteId, remoteLogin, String.valueOf(localOffer));
 
         initForwarding();
-
-        if (localOffer) {
-            new Thread(ice::initiateIce).start();
-        }
     }
 
     /**
@@ -61,7 +60,7 @@ public class Peer {
      */
     synchronized void onIceDataReceived(byte data[], int offset, int length) {
         try {
-            DatagramPacket packet = new DatagramPacket(data, offset, length, InetAddress.getByName("127.0.0.1"), IceAdapter.LOBBY_PORT);
+            DatagramPacket packet = new DatagramPacket(data, offset, length, InetAddress.getLoopbackAddress(), IceAdapter.LOBBY_PORT);
             faSocket.send(packet);
         } catch (UnknownHostException e) {
         } catch (IOException e) {
@@ -79,7 +78,7 @@ public class Peer {
             try {
                 DatagramPacket packet = new DatagramPacket(data, data.length);
                 faSocket.receive(packet);
-                ice.onFaDataReceived(data, packet.getLength());
+                gameSession.onFaDataReceived(remoteId, data, packet.getLength());
             } catch (IOException e) {
                 log.debug("Error while reading from local FA as peer (probably disconnecting from peer) " + getPeerIdentifier(), e);
                 return;
@@ -99,10 +98,6 @@ public class Peer {
         closing = true;
         if(faSocket != null) {
             faSocket.close();
-        }
-
-        if(ice != null) {
-            ice.close();
         }
     }
 

@@ -182,21 +182,21 @@ public class TelemetryDebugger implements Debugger {
 
     @Override
     public void peerStateChanged(Peer peer) {
-        sendMessage(new UpdatePeerState(
-                UUID.randomUUID(),
-                peer.getRemoteId(),
-                peer.getIce().getIceState(),
-                Optional.ofNullable(peer.getIce().getComponent())
-                        .map(Component::getSelectedPair)
-                        .map(CandidatePair::getLocalCandidate)
-                        .map(Candidate::getType)
-                        .orElse(null),
-                Optional.ofNullable(peer.getIce().getComponent())
-                        .map(Component::getSelectedPair)
-                        .map(CandidatePair::getRemoteCandidate)
-                        .map(Candidate::getType)
-                        .orElse(null)
-        ));
+        // sendMessage(new UpdatePeerState(
+        //         UUID.randomUUID(),
+        //         peer.getRemoteId(),
+        //         peer.getIce().getIceState(),
+        //         Optional.ofNullable(peer.getIce().getComponent())
+        //                 .map(Component::getSelectedPair)
+        //                 .map(CandidatePair::getLocalCandidate)
+        //                 .map(Candidate::getType)
+        //                 .orElse(null),
+        //         Optional.ofNullable(peer.getIce().getComponent())
+        //                 .map(Component::getSelectedPair)
+        //                 .map(CandidatePair::getRemoteCandidate)
+        //                 .map(Candidate::getType)
+        //                 .orElse(null)
+        // ));
     }
 
     @Override
@@ -211,17 +211,17 @@ public class TelemetryDebugger implements Debugger {
 
         log.trace("Sending connectivity update for peer {} (id {})", peer.getRemoteLogin(), peer.getRemoteId());
 
-        sendMessage(new UpdatePeerConnectivity(
-                UUID.randomUUID(),
-                peer.getRemoteId(),
-                Optional.ofNullable(peer.getIce().getConnectivityChecker())
-                        .map(PeerConnectivityCheckerModule::getAverageRTT)
-                        .orElse(null),
-                Optional.ofNullable(peer.getIce().getConnectivityChecker())
-                        .map(PeerConnectivityCheckerModule::getLastPacketReceived)
-                        .map(Instant::ofEpochMilli)
-                        .orElse(null)
-        ));
+        // sendMessage(new UpdatePeerConnectivity(
+        //         UUID.randomUUID(),
+        //         peer.getRemoteId(),
+        //         Optional.ofNullable(peer.getIce().getConnectivityChecker())
+        //                 .map(PeerConnectivityCheckerModule::getAverageRTT)
+        //                 .orElse(null),
+        //         Optional.ofNullable(peer.getIce().getConnectivityChecker())
+        //                 .map(PeerConnectivityCheckerModule::getLastPacketReceived)
+        //                 .map(Instant::ofEpochMilli)
+        //                 .orElse(null)
+        // ));
     }
 
     @Override
