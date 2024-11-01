@@ -67,7 +67,7 @@ public class GameSession extends Thread {
     }
 
     public void init() throws Exception {
-        String addr = System.getProperty("FAF_PROXY", "192.168.1.66");
+        String addr = System.getProperty("FAF_PROXY", "176.119.158.140");
         endpoint = new InetSocketAddress(addr, 7788);
         this.start();
     }
