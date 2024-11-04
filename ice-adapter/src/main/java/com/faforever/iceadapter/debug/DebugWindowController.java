@@ -40,6 +40,7 @@ public class DebugWindowController {
 	public TableColumn invalidEchosRcvColumn;
 	public TableColumn localCandColumn;
 	public TableColumn remoteCandColumn;
+	public TableColumn resendColumn;
 
 	public Button killAdapterButton;
 
@@ -70,6 +71,7 @@ public class DebugWindowController {
 		invalidEchosRcvColumn.setCellValueFactory(new PropertyValueFactory<>("invalidEchosReceived"));
 		localCandColumn.setCellValueFactory(new PropertyValueFactory<>("localCandidate"));
 		remoteCandColumn.setCellValueFactory(new PropertyValueFactory<>("remoteCandidate"));
+		resendColumn.setCellValueFactory(new PropertyValueFactory<>("resendCounter"));
 
 		killAdapterButton.setOnAction(this::onKillAdapterClicked);
 	}
