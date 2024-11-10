@@ -186,6 +186,7 @@ public class DebugWindow extends Application implements Debugger {
                     p.echosReceived.set(connectivityChecker.map(PeerConnectivityCheckerModule::getEchosReceived).orElse(-1L).intValue());
                     p.echosReceived.set(connectivityChecker.map(PeerConnectivityCheckerModule::getEchosReceived).orElse(-1L).intValue());
                     p.resendCounter.set(peer.getResendCounter());
+                    p.recvStats.set(String.format("% 5d / %d bytes", peer.getNumIncomingPackets(), peer.getTotalSize()));
                 });
             }
         });
@@ -219,6 +220,7 @@ public class DebugWindow extends Application implements Debugger {
         public SimpleStringProperty localCandidate = new SimpleStringProperty("");
         public SimpleStringProperty remoteCandidate = new SimpleStringProperty("");
         public SimpleIntegerProperty resendCounter = new SimpleIntegerProperty(0);
+        public SimpleStringProperty recvStats = new SimpleStringProperty("");
 
         public int getId() {
             return id.get();
@@ -305,5 +307,6 @@ public class DebugWindow extends Application implements Debugger {
         }
 
         public SimpleIntegerProperty resendCounterProperty() { return resendCounter; }
+        public SimpleStringProperty recvStatsProperty() { return recvStats; }
     }
 }

@@ -27,6 +27,8 @@ public class Peer {
     private DatagramSocket faSocket;//Socket on which we are listening for FA / sending data to FA
 
     @Getter private int resendCounter = 0;
+    @Getter private int numIncomingPackets = 0;
+    @Getter private int totalSize = 0;
     
     int seqPtr = 0;
     long[] seqHist = new long[10];
@@ -72,6 +74,8 @@ public class Peer {
             DatagramPacket packet = new DatagramPacket(data, offset, length, InetAddress.getByName("127.0.0.1"), IceAdapter.LOBBY_PORT);
             faSocket.send(packet);
             inspectPacket(data, offset, length, true);
+            numIncomingPackets += 1;
+            totalSize += length;
         } catch (UnknownHostException e) {
         } catch (IOException e) {
             log.error("Error while writing to local FA as peer (probably disconnecting from peer) " + getPeerIdentifier(), e);

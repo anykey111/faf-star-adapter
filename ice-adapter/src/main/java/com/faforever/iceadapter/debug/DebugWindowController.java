@@ -41,6 +41,7 @@ public class DebugWindowController {
 	public TableColumn localCandColumn;
 	public TableColumn remoteCandColumn;
 	public TableColumn resendColumn;
+	public TableColumn recvStatsColumn;
 
 	public Button killAdapterButton;
 
@@ -72,6 +73,7 @@ public class DebugWindowController {
 		localCandColumn.setCellValueFactory(new PropertyValueFactory<>("localCandidate"));
 		remoteCandColumn.setCellValueFactory(new PropertyValueFactory<>("remoteCandidate"));
 		resendColumn.setCellValueFactory(new PropertyValueFactory<>("resendCounter"));
+		recvStatsColumn.setCellValueFactory(new PropertyValueFactory<>("recvStats"));
 
 		killAdapterButton.setOnAction(this::onKillAdapterClicked);
 	}

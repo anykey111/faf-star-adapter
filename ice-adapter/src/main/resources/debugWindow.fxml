@@ -65,6 +65,7 @@
                     <TableColumn fx:id="echosRcvColumn" prefWidth="100.0" text="echos recv" />
                     <TableColumn fx:id="invalidEchosRcvColumn" prefWidth="100.0" text="invalid echos recv" />
                     <TableColumn fx:id="resendColumn" prefWidth="100.0" text="resend counter" />
+                    <TableColumn fx:id="recvStatsColumn" prefWidth="100.0" text="recv stats" />
                     
                 </columns>
             </TableView>

@@ -384,6 +384,7 @@ public class PeerIceModule {
     public void listener() {
         log.debug(getLogPrefix() + "Now forwarding data from ICE to FA for peer");
         Component localComponent = component;
+        long lastUpdate = 0;
 
         byte[] data = new byte[65536];//64KiB = UDP MTU, in practice due to ethernet frames being <= 1500 B, this is often not used
         while (IceAdapter.running && IceAdapter.gameSession == peer.getGameSession()) {
@@ -409,6 +410,11 @@ public class PeerIceModule {
                     log.warn(getLogPrefix() + "Received invalid packet, first byte: 0x{}, length: {}", data[0], packet.getLength());
                 }
 
+                long now = System.currentTimeMillis();
+                if (lastUpdate + 1000 < now) {
+                    debug().peerConnectivityUpdate(peer.getIce().getPeer());
+                    lastUpdate = now;
+                }
             } catch (IOException e) {//TODO: nullpointer from localComponent.xxxx????
                 log.warn(getLogPrefix() + "Error while reading from ICE adapter", e);
                 if(component == localComponent) {
