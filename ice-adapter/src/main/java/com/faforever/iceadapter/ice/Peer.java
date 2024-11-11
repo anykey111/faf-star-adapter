@@ -31,7 +31,7 @@ public class Peer {
     @Getter private int totalSize = 0;
     
     int seqPtr = 0;
-    long[] seqHist = new long[10];
+    long[] seqHist = new long[40];
 
     public Peer(GameSession gameSession, int remoteId, String remoteLogin, boolean localOffer) {
         this.gameSession = gameSession;
